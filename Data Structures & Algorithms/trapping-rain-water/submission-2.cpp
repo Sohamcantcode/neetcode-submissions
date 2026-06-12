@@ -1,28 +1,27 @@
 class Solution {
 public:
-    int maxArea(vector<int>& heights) 
+    int trap(vector<int>& height) 
     {
-        int maxArea = 0;
-
-        int n = heights.size();
-        int left = 0;
-        int right = n-1;
-        while(left<right)
+        int n = height.size();
+        int total = 0;
+        int prefix[n];
+        int suffix[n];
+        prefix[0] = height[0];
+        suffix[n-1] = height[n-1];
+        for(int i = 1;i<n;i++)
         {
-            int area = min(heights[left],heights[right]) * (right - left);
-            if(area > maxArea)
-            {
-                maxArea = area;
-            }
-            if(heights[left] < heights[right])
-            {
-                left++;
-            }
-            else
-            {
-                right--;
-            }
+            prefix[i] = max(prefix[i-1] , height[i]);
         }
-        return maxArea;
+        for(int i = n-2;i>=0;i--)
+        {
+            suffix[i] = max(suffix[i+1] , height[i]);
+        }
+        
+        for(int i = 0;i<n;i++)
+        {
+            total+=min(prefix[i],suffix[i])-height[i];
+        } 
+        return total;
+        
     }
-};    
+};
